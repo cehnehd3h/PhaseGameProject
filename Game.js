@@ -33,7 +33,7 @@ export default class GameScene extends Phaser.Scene
     create() 
     {
         // track framerate
-        this.fpsText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#00ff00' });
+        this.fpsText = this.add.text(700, 10, '', { font: '16px Arial', fill: util.colorToHex(0, 255, 0) });
 
          // shortcut for input
         this.cursors = this.input.keyboard.createCursorKeys();

@@ -1,5 +1,6 @@
 import GameScene from './Game.js';
 
+// boilerplate logic for phaser to initialize the game engine
 window.onload = () => {
     var config = {
         type: Phaser.AUTO,
