@@ -1,38 +1,52 @@
-var jQueryScript = document.createElement('script');  
-jQueryScript.setAttribute('src','https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js');
-document.head.appendChild(jQueryScript);
+import * as util from './Utility.js'
+import * as global from './GlobalData.js'
+import * as gameObjectList from './GameObjectList.js'
+import GameObject from './GameObject.js'
 
-class GameScene extends Phaser.Scene {
-
-    preload() {
-        this.load.setBaseURL('https://labs.phaser.io');
-
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
-
-        console.log("here2");
+export default class GameScene extends Phaser.Scene 
+{
+    // register a collision between 2 objects. Optionally provide a callback
+    registerCollision(obj1, obj2, callback = null) {
+        if (callback) {
+            this.physics.add.collider(obj1, obj2, callback, null, this);
+        } else {
+             this.physics.add.collider(obj1, obj2, obj1.onCollision, null, this);
+        }
     }
 
-    create() {
-         this.add.image(400, 300, 'sky');
-
-            const particles = this.add.particles(0, 0, 'red', {
-                speed: 100,
-                scale: { start: 1, end: 0 },
-                blendMode: 'ADD'
-            });
-
-            const logo = this.physics.add.image(400, 100, 'logo');
-
-            logo.setVelocity(100, 200);
-            logo.setBounce(1, 1);
-            logo.setCollideWorldBounds(true);
-
-            particles.startFollow(logo);
+    // restart the game, reloading the level
+    restart()
+    {
+        gameObjectList.removeAllObjects();
+        this.scene.restart();
     }
 
-    update() {
-        // Game logic goes here
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // load all assets ////////////////////////////////////////////////////////////////////////////
+    preload() 
+    {
+        // !!WARNING!! Textures have to be loaded here! Do not create game objects here!
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // create the scene ///////////////////////////////////////////////////////////////////////////
+    create() 
+    {
+         // shortcut for input
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        //  Enable world bounds, but disable the floor
+        this.physics.world.setBoundsCollision(true, true, true, false);
+
+        // Initialize your scene here!
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // main scene update //////////////////////////////////////////////////////////////////////////
+    update() 
+    {
+        // Implement scene logic here!
     }
 }
+
+

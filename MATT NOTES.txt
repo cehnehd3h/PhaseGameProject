@@ -1,0 +1,30 @@
+MATT NOTES
+
+- coordinates
+	POS Y DOWN, pos x right
+
+- make immovable
+	this.body.setImmovable()
+
+- make bouncy
+	this.body.setBounce(1);
+
+- add text
+	this.text = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+	this.text.setText(`Score: ${this.score}`);
+	this.text.setVisible(true/false);
+	this.scoreText.setDepth(1);
+
+- add variable to object
+	player1.setData('name', value);
+	player1.getData('name')
+
+- Collide with world boundaries
+	sprite.setCollideWorldBounds(true);
+
+- get/set Scene data
+	setGlobal('key', value)
+	getGlobal('key')
+
+- set color
+	this.setTint(0x00FF00)
