@@ -32,6 +32,9 @@ export default class GameScene extends Phaser.Scene
     // create the scene ///////////////////////////////////////////////////////////////////////////
     create() 
     {
+        // track framerate
+        this.fpsText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#00ff00' });
+
          // shortcut for input
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -45,6 +48,8 @@ export default class GameScene extends Phaser.Scene
     // main scene update //////////////////////////////////////////////////////////////////////////
     update() 
     {
+        this.fpsText.setText('FPS: ' + this.game.loop.actualFps.toFixed(2));
+
         // Implement scene logic here!
     }
 }
