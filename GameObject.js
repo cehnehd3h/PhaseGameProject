@@ -3,7 +3,7 @@ import * as gameObjectList from './GameObjectList.js'
 
 export default class GameObject extends Phaser.GameObjects.Sprite 
 {
-	constructor(scene, x, y, name, texture, hasCollision = true)
+	constructor(scene, x, y, name, texture)
 	{
 		super(scene, x, y, texture);
 
@@ -11,8 +11,7 @@ export default class GameObject extends Phaser.GameObjects.Sprite
 		scene.add.existing(this);
 
 		// add to physics engine
-		if (hasCollision)
-			scene.physics.add.existing(this);
+		scene.physics.add.existing(this);
 
 		// add object to our own tracking system
 		gameObjectList.addObject(this);
@@ -20,17 +19,14 @@ export default class GameObject extends Phaser.GameObjects.Sprite
 		this.name = name;
 	}
 
-	// helpers to set the velocity of the object
 	setVelocityX(x)
 	{
 		this.body.setVelocityX(x);
 	}
-
 	setVelocityY(y)
 	{
 		this.body.setVelocityY(y);
 	}
-
 	setVelocity(v)
 	{
 		this.body.setVelocity(v);
