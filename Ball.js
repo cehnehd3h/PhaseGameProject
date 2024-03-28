@@ -10,47 +10,36 @@ export default class Ball extends GameObject
 		// set the name and texture for the player, so it's easy to be consistent
 		super(scene, x, y, 'ball', 'ball.png');
 
-		this.body.setVelocityY(100);
+		// set the initial velocity
+		this.setVelocityX(-250);
+		this.setVelocityY(-202);
 
-		this.body.setCollideWorldBounds(true);
-
+		// tell the game to let the ball bounce
 		this.body.setBounce(1);
-	}
 
-	onDestroy()
-	{
-		console.log("ball dead");
+		// tell the game to let the ball bounce off the walls
+		this.body.setCollideWorldBounds(true);
 	}
 
 	update()
 	{
-		let offset = 50;
-
-		if(!global.get('inPlay'))
-		{
-			let paddle = gameObjectList.getObjectByName('player');
-			this.x = paddle.x;
-			this.y = paddle.y - offset;
-			this.setVelocity(0);
-
-			if (this.scene.cursors.space.isDown)
-			{
-				global.set('inPlay', true);
-				this.setVelocityY(-500);
-			}
-		}
-
+		// if the y coordinate is greater than 600, the ball is offscreen
+		// move it back onto the screen
 		if(this.y > 600)
 		{
-			global.set('inPlay', false);
+			this.x = 400;
+			this.y = 300;
 		}
 	}
 
+	// this function gets called when the ball hits something
 	onCollision(ball, hitObject)
 	{
-		if(hitObject.name == 'brick')
-		{
-			gameObjectList.removeObject(hitObject);
-		}
+		console.log("The ball hit something");
+
+		gameObjectList.removeObject(hitObject);
+
+		global.subtract('brickCount', 1);
+		console.log(global.get('brickCount'));
 	}
 }

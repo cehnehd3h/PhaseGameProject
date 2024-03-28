@@ -10,14 +10,11 @@ export default class Brick extends GameObject
 		// set the name and texture for the player, so it's easy to be consistent
 		super(scene, x, y, 'brick', 'brick.png');
 
-
 		this.body.setImmovable();
 	}
 
 	onDestroy()
 	{
-		console.log('Brick destroyed!');
-		global.add('score', 100);
-		global.subtract('brickCount', 1);
+
 	}
 }

@@ -2,15 +2,13 @@ import * as util from './Utility.js'
 import * as global from './GlobalData.js'
 import * as gameObjectList from './GameObjectList.js'
 import GameObject from './GameObject.js'
+
 import Player from './Player.js'
-import Brick from './Brick.js'
 import Ball from './Ball.js'
+import Brick from './Brick.js'
 
 export default class GameScene extends Phaser.Scene 
 {
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    // utility functions //////////////////////////////////////////////////////////////////////////
-
     // register a collision between 2 objects. Optionally provide a callback
     registerCollision(obj1, obj2, callback = null) {
         if (callback) {
@@ -37,12 +35,26 @@ export default class GameScene extends Phaser.Scene
         this.load.image('brick.png', './assets/brick.png');
     }
 
+    createBrick(color, ball, x, y)
+    {
+        let brick = new Brick(this, x, y);
+
+        // register collision between ball and the brick
+        this.registerCollision(ball, brick);
+
+        // set the color of the brick
+        brick.setTint(color);
+
+        global.add('brickCount', 1);
+        console.log(global.get('brickCount'));
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // create the scene ///////////////////////////////////////////////////////////////////////////
     create() 
     {
-	// track fps
-	this.fpsText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#00ff00' });
+        // track framerate
+        this.fpsText = this.add.text(700, 10, '', { font: '16px Arial', fill: util.colorToHex(0, 255, 0) });
 
          // shortcut for input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -50,68 +62,56 @@ export default class GameScene extends Phaser.Scene
         //  Enable world bounds, but disable the floor
         this.physics.world.setBoundsCollision(true, true, true, false);
 
-        /////////////////////////////////////////
-        // create your initial objects here! ////
-        let player = new Player(this, 0, 0);
+        // Initialize your scene here!
 
-        // set initial player position
-        player.setPosition(400, 500);
+        // create the paddle
+        let player = new Player(this, 400, 600);
 
         // create the ball
-        let ball = new Ball(this, 400, 400);
+        let ball = new Ball(this, 400, 300);
 
-        // register collision between ball and brick
+        // register collision between ball and paddle
         this.registerCollision(player, ball);
 
-        // create score text to show our score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#F00' });
-        this.scoreText.setDepth(1);
-
-        // initial play state to false
-        global.set('inPlay', false);
-
-        // Create bricks!
         global.set('brickCount', 0);
 
-        let yCount = 3;
-        let xCount = 1;
-        let spacing = 10;
-        let size = 64 + spacing;
-        for(let y = 0; y < 64 * yCount; y += size)
+        let brickSize = 64;
+        for(let positionX = 64; positionX < 120; positionX += brickSize)
         {
-            for(let x = 0; x < 64 * xCount; x += size)
-            {
-                // create a new brick
-                let brick = new Brick(this, x + 150, y + 50);
-
-                // register the collision between the player and this brick
-                this.registerCollision(ball, brick);
-
-                global.add('brickCount', 1);
-            }
+            this.createBrick(0xff0000, ball, positionX, 50);
         }
+
+        for(let positionX = 64; positionX < 120; positionX += brickSize)
+        {
+            this.createBrick(0x00ff00, ball, positionX, 200);
+        }
+
+        for(let positionX = 64; positionX < 120; positionX += brickSize)
+        {
+            this.createBrick(0x0000ff, ball, positionX, 100);
+        }
+
+        // create text to tell the player they won!
+        this.winText = this.add.text(400, 300, 'You Win!', { fontSize: '64px', fill: '#F00' });
         
-        // initialize global score
-        global.set('score', 0);
+        // hide the text by default
+        this.winText.setVisible(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // main scene update //////////////////////////////////////////////////////////////////////////
     update() 
     {
-	this.fpsText.setText('FPS: ' + this.game.loop.actualFps.toFixed(2));
-        let bricksLeft = global.get('brickCount');
-        
-        if(bricksLeft == 0)
-        {
-            console.log('You win!')
-            this.restart();
-        }
-
-        this.scoreText.setText(`Score: ${global.get('score')}`);
+        this.fpsText.setText('FPS: ' + this.game.loop.actualFps.toFixed(2));
 
         // Implement scene logic here!
-        
+
+        // if there are no more bricks, show the win text
+        let numberOfBricksOnTheScreen = global.get('brickCount');
+        if(numberOfBricksOnTheScreen == 0)
+        {
+            this.winText.setVisible(true);
+        }
     }
 }
 
