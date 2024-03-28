@@ -76,17 +76,17 @@ export default class GameScene extends Phaser.Scene
         global.set('brickCount', 0);
 
         let brickSize = 64;
-        for(let positionX = 64; positionX < 120; positionX += brickSize)
+        for(let positionX = 64; positionX < 700; positionX += brickSize)
         {
             this.createBrick(0xff0000, ball, positionX, 50);
         }
 
-        for(let positionX = 64; positionX < 120; positionX += brickSize)
+        for(let positionX = 64; positionX < 700; positionX += brickSize)
         {
             this.createBrick(0x00ff00, ball, positionX, 200);
         }
 
-        for(let positionX = 64; positionX < 120; positionX += brickSize)
+        for(let positionX = 64; positionX < 700; positionX += brickSize)
         {
             this.createBrick(0x0000ff, ball, positionX, 100);
         }
