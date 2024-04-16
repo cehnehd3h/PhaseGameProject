@@ -18,6 +18,7 @@ export default class GameObject extends Phaser.GameObjects.Sprite
 		gameObjectList.addObject(this);
 
 		this.name = name;
+		this.scene = scene;
 	}
 
 	// helpers to set the velocity of the object

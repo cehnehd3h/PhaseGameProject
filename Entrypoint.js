@@ -1,4 +1,6 @@
-import GameScene from './Game.js';
+
+import AsteroidScene from './AsteroidScene.js';
+import BreakoutScene from './BreakoutScene.js';
 
 // boilerplate logic for phaser to initialize the game engine
 window.onload = () => {
@@ -13,7 +15,8 @@ window.onload = () => {
                 debug: false
             }
         },
-        scene: [GameScene]
+        fps: { forceSetTimeOut: true, target: 30 },
+        scene: [AsteroidScene]
     };
 
     var game = new Phaser.Game(config);
